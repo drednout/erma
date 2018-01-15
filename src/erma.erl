@@ -313,7 +313,9 @@ build_where_condition({Key, is, Is}, Database) ->
 build_where_condition({Key, between, Value1, Value2}, Database) ->
     [prepare_name(Key, Database), " BETWEEN ", build_where_value(Value1), " AND ", build_where_value(Value2)];
 build_where_condition({Key, Value}, Database) ->
-    [prepare_name(Key, Database), " = ", build_where_value(Value)].
+    [prepare_name(Key, Database), " = ", build_where_value(Value)];
+build_where_condition({Key, Op, Value}, Database) when is_atom(Op) ->
+    [prepare_name(Key, Database), erlang:atom_to_list(Op), build_where_value(Value)].
 
 build_is(PrepKey, null, _) ->
     [PrepKey, " IS NULL"];
